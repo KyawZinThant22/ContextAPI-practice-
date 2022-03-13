@@ -1,24 +1,47 @@
-import logo from './logo.svg';
+
+import { useContext, useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import Cart from './components/Cart';
+import { CartAPI } from './components/Context';
+import Header from './components/Header';
+import Home from './components/Home';
+
 
 function App() {
+
+
+  const {data, setData} = useContext(CartAPI)
+
+
+    useEffect(()=>{
+        const dataJson = localStorage.getItem("Datas")
+
+        if(data) setData(JSON.parse(dataJson))
+    },[])
+
+    useEffect(() => {
+        localStorage.setItem("Datas" , JSON.stringify(data))
+    },[data])
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+
+
+    <div className="header">
+
+       <Header/>
+        <Routes>
+          <Route path='/' element = { <Home/> }> </Route>
+          <Route path='/cart' element = { <Cart/> }  ></Route>
+       
+
+        </Routes>
+
+        
+      </div>
+    </BrowserRouter>
   );
 }
 
